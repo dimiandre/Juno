@@ -194,17 +194,17 @@ Example:
 
 				val := validators[delegation.ValidatorAddress.String()]
 
+				stakedAtoms := delegation.Shares.MulInt(val.Tokens).Quo(val.DelegatorShares).RoundInt()
+				totalStakedAtom = totalStakedAtom.Add(stakedAtoms)
+
 				// Skip delegations to exchanges
-				if exchangeMap[sdk.AccAddress(delegation.ValidatorAddress.Bytes()).String()] {
+				if exchangeMap[delegation.ValidatorAddress.String()] {
 					continue
 				}
-
-				stakedAtoms := delegation.Shares.MulInt(val.Tokens).Quo(val.DelegatorShares).RoundInt()
 
 				acc.AtomBalance = acc.AtomBalance.Add(stakedAtoms)
 				acc.AtomStakedBalance = acc.AtomStakedBalance.Add(stakedAtoms)
 
-				totalStakedAtom = totalStakedAtom.Add(stakedAtoms)
 				snapshot[address] = acc
 			}
 
